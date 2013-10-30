@@ -27,14 +27,10 @@ public class RemoteDownload {
 
             InputStream in = con.getInputStream();
 
-            int lines = 0;
-            int size = 0;
-            while ((lines = in.read()) != -1) {
-                size++;
-            }
+            int size = checkNumberOfLines(in);
 
             pw.println();
-            System.out.println("Done for " + Thread.currentThread().getName() + " read " + size);
+            printSuccess(size);
 
             return true;
         } catch (Exception e) {
@@ -45,6 +41,19 @@ public class RemoteDownload {
                 con.disconnect();
         }
         return false;
+    }
+
+    private int checkNumberOfLines(InputStream in) throws IOException {
+        int lines = 0;
+        int size = 0;
+        while ((lines = in.read()) != -1) {
+            size++;
+        }
+        return size;
+    }
+
+    private void printSuccess(int size) {
+        System.out.println("Done for " + Thread.currentThread().getName() + " read " + size);
     }
 
     private void dealWithErrors(String url, HttpURLConnection con) {

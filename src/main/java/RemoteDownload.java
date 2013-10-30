@@ -21,17 +21,17 @@ public class RemoteDownload {
         HttpURLConnection con = null;
         StringWriter sw = new StringWriter();
         try {
-            PrintWriter pw = new PrintWriter(sw);
             HttpURLConnection.setFollowRedirects(false);
-            con = (HttpURLConnection) new URL(url).openConnection();
 
+            con = (HttpURLConnection) new URL(url).openConnection();
             con.connect();
 
             int size = checkNumberOfLines(con.getInputStream());
-
             getAndPrintHeaders(con.getHeaderFields());
 
+            PrintWriter pw = new PrintWriter(sw);
             pw.println();
+
             printSuccess(size);
 
             return true;

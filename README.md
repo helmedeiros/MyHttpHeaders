@@ -1,4 +1,4 @@
-SquidTester
+My HTTP Headers
 ===========
 
-A simple tester for squid blocking
+A simple HTTP Header check.

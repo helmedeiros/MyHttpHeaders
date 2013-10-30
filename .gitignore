@@ -21,10 +21,6 @@ Icon
 # Thumbnails
 ._*
 
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
 ### Eclipse ###
 *.pydevproject
 .project
@@ -40,9 +36,6 @@ local.properties
 .classpath
 .settings/
 .loadpath
-
-# External tool builders
-.externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
 *.launch

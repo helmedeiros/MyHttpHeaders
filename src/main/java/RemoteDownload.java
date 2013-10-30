@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
 
 /**
  * Auxiliary class to download information.
@@ -13,6 +12,8 @@ import java.util.Map;
  * Time: 1:10 PM
  */
 public class RemoteDownload {
+
+    public static final int BAD_REQUEST = 400;
 
     public boolean download(final String url) {
         HttpURLConnection con = null;
@@ -38,20 +39,36 @@ public class RemoteDownload {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            try {
-                if (con.getResponseCode() == 400) {
-                    System.out.println(con.getURL());
-                    System.exit(1);
-                }
-                System.out.print(new StringBuilder().append("fail for \"").append(url).append("\" with status: ").append(con.getResponseCode()).toString());
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            dealWithErrors(url, con);
         } finally {
             if (con != null)
                 con.disconnect();
         }
         return false;
+    }
+
+    private void dealWithErrors(String url, HttpURLConnection con) {
+        try {
+            stopTryingWhenBadRequestIn(con);
+            printFail(url, con);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private void printFail(String url, HttpURLConnection con) throws IOException {
+        System.out.print(new StringBuilder().append("fail for \"").append(url).append("\" with status: ").append(con.getResponseCode()).toString());
+    }
+
+    private void stopTryingWhenBadRequestIn(HttpURLConnection con) throws IOException {
+        if (respondBadRequest(con)) {
+            System.out.println(con.getURL());
+            System.exit(1);
+        }
+    }
+
+    private boolean respondBadRequest(HttpURLConnection con) throws IOException {
+        return con.getResponseCode() == BAD_REQUEST;
     }
 
 }

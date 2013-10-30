@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class RemoteDownloadTest {
 
     @Test public void shouldDownloadFromANExistentURL() throws Exception {
-        RemoteDownload remoteDownload = new RemoteDownload();
-        assertTrue(remoteDownload.download("http://static.zoom.com.br/PARTNER_MEDIA_PORTAL/click_rbs_horizontal_4_32.xml"));
+        RemoteDownload remoteDownload = new RemoteDownload("http://static.zoom.com.br/PARTNER_MEDIA_PORTAL/click_rbs_horizontal_4_32.xml");
+        assertTrue(remoteDownload.download());
     }
 }

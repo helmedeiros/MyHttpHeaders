@@ -17,17 +17,25 @@ public class RemoteDownload {
 
     public static final int BAD_REQUEST = 400;
 
-    public boolean download(final String url) {
+    private final String url;
+    private Map<String, List<String>> headerFields;
+
+    public RemoteDownload(String url) {
+        this.url = url;
+    }
+
+    public boolean download() {
         HttpURLConnection con = null;
         StringWriter sw = new StringWriter();
         try {
             HttpURLConnection.setFollowRedirects(false);
 
-            con = (HttpURLConnection) new URL(url).openConnection();
+            con = (HttpURLConnection) new URL(this.url).openConnection();
             con.connect();
 
             int size = checkNumberOfLines(con.getInputStream());
-            getAndPrintHeaders(con.getHeaderFields());
+            this.headerFields = con.getHeaderFields();
+            printHeaders();
 
             PrintWriter pw = new PrintWriter(sw);
             pw.println();
@@ -37,7 +45,7 @@ public class RemoteDownload {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            dealWithErrors(url, con);
+            dealWithErrors(this.url, con);
         } finally {
             if (con != null)
                 con.disconnect();
@@ -54,7 +62,7 @@ public class RemoteDownload {
         return size;
     }
 
-    private void getAndPrintHeaders(Map<String, List<String>> headerFields) {
+    private void printHeaders() {
         for (Map.Entry entry : headerFields.entrySet()) {
             System.out.println(entry.getKey() + "\t" + entry.getValue());
         }

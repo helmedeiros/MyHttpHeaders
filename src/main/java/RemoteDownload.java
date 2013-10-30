@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Auxiliary class to download information.
@@ -25,9 +27,9 @@ public class RemoteDownload {
 
             con.connect();
 
-            InputStream in = con.getInputStream();
+            int size = checkNumberOfLines(con.getInputStream());
 
-            int size = checkNumberOfLines(in);
+            getAndPrintHeaders(con.getHeaderFields());
 
             pw.println();
             printSuccess(size);
@@ -50,6 +52,12 @@ public class RemoteDownload {
             size++;
         }
         return size;
+    }
+
+    private void getAndPrintHeaders(Map<String, List<String>> headerFields) {
+        for (Map.Entry entry : headerFields.entrySet()) {
+            System.out.println(entry.getKey() + "\t" + entry.getValue());
+        }
     }
 
     private void printSuccess(int size) {

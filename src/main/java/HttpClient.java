@@ -8,23 +8,23 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Auxiliary class to download information.
+ * Auxiliary class to execute information.
  * User: helmedeiros
  * Date: 10/30/13
  * Time: 1:10 PM
  */
-public class RemoteDownload {
+public class HttpClient {
 
     public static final int BAD_REQUEST = 400;
 
     private final String url;
     private Map<String, List<String>> headerFields;
 
-    public RemoteDownload(String url) {
+    public HttpClient(String url) {
         this.url = url;
     }
 
-    public boolean download() {
+    public boolean execute() {
         HttpURLConnection con = null;
         StringWriter sw = new StringWriter();
         try {
@@ -82,7 +82,7 @@ public class RemoteDownload {
     }
 
     private void printFail(String url, HttpURLConnection con) throws IOException {
-        System.out.print(new StringBuilder().append("fail for \"").append(url).append("\" with status: ").append(con.getResponseCode()).toString());
+        System.out.print("fail for \"" + url + "\" with status: " + con.getResponseCode());
     }
 
     private void stopTryingWhenBadRequestIn(HttpURLConnection con) throws IOException {
